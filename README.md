@@ -1,6 +1,6 @@
 # cse210-ww-student-template
 
-My name is Michael Pienaar. I'm 24 years old, and I'm from South Africa. I've truly fallen in love with programming and coding. 
+My name is Michael Pienaar. I'm 24 years old, and I'm from South Africa. I've truly fallen in love with programming.
 
 This is the starter code for students in the worldwide content version of CSE 210.
 
