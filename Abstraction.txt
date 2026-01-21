@@ -1,0 +1,3 @@
+Abstraction in programming is basically about focusing on what something does, instead of how it works internally. It helps us keep our code simpler and easier to work with, because we don’t have to worry about every little detail inside a class. One big benefit of abstraction is that it makes our programs easier to maintain. For example, if we change how a class works internally, other parts of the program don’t break as long as we keep the public methods the same.
+
+A good example is the Entry class in the Journal program. Each entry stores the date, a prompt, and the user’s text, and it has a Display() method. The Journal or main program doesn’t need to know how Display() works — it just calls entry.Display(). This keeps things clean, organized, and reusable.
