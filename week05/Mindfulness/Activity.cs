@@ -4,9 +4,9 @@ using System.Threading;
 // Base class for all mindfulness activities
 public class Activity
 {
-    // Protected member variables (accessible by derived classes)
-    protected string _name;
-    protected string _description;
+    // Private member variables - only _duration is protected because derived classes need it for their timer loops
+    private string _name;
+    private string _description;
     protected int _duration; // in seconds
 
     // Constructor
@@ -48,15 +48,7 @@ public class Activity
     // Show a spinner animation for a given number of seconds
     public void ShowSpinner(int seconds)
     {
-        List<string> animationStrings = new List<string>();
-        animationStrings.Add("|");
-        animationStrings.Add("/");
-        animationStrings.Add("-");
-        animationStrings.Add("\\");
-        animationStrings.Add("|");
-        animationStrings.Add("/");
-        animationStrings.Add("-");
-        animationStrings.Add("\\");
+        List<string> animationStrings = new List<string> { "|", "/", "-", "\\", "|", "/", "-", "\\" };
 
         DateTime startTime = DateTime.Now;
         DateTime endTime = startTime.AddSeconds(seconds);
@@ -79,14 +71,18 @@ public class Activity
         }
     }
 
-    // Show a countdown animation
+    // Show a countdown animation — correctly erases numbers of any digit length
     public void ShowCountDown(int seconds)
     {
         for (int i = seconds; i > 0; i--)
         {
-            Console.Write(i);
+            string numStr = i.ToString();
+            Console.Write(numStr);
             Thread.Sleep(1000);
-            Console.Write("\b \b"); // Erase the number
+            // Erase each character written (handles 1- and 2-digit numbers correctly)
+            Console.Write(new string('\b', numStr.Length));
+            Console.Write(new string(' ', numStr.Length));
+            Console.Write(new string('\b', numStr.Length));
         }
     }
 

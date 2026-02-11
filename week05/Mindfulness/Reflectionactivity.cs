@@ -4,18 +4,18 @@ using System.Collections.Generic;
 // Reflection Activity - guides user through reflection on past experiences
 public class ReflectionActivity : Activity
 {
-    // List of prompts for reflection
+    // Master lists (never modified)
     private List<string> _prompts;
-    
-    // List of questions to ask about the experience
     private List<string> _questions;
 
+    // Shuffled queue — questions are drawn without repeating until all are used
+    private Queue<string> _questionQueue;
+
     // Constructor
-    public ReflectionActivity() 
-        : base("Reflection Activity", 
+    public ReflectionActivity()
+        : base("Reflection Activity",
                "This activity will help you reflect on times in your life when you have shown strength and resilience. This will help you recognize the power you have and how you can use it in other aspects of your life.")
     {
-        // Initialize prompts
         _prompts = new List<string>
         {
             "Think of a time when you stood up for someone else.",
@@ -24,7 +24,6 @@ public class ReflectionActivity : Activity
             "Think of a time when you did something truly selfless."
         };
 
-        // Initialize questions
         _questions = new List<string>
         {
             "Why was this experience meaningful to you?",
@@ -37,9 +36,11 @@ public class ReflectionActivity : Activity
             "What did you learn about yourself through this experience?",
             "How can you keep this experience in mind in the future?"
         };
+
+        _questionQueue = new Queue<string>();
     }
 
-    // Get a random prompt
+    // Returns a random prompt from the list
     public string GetRandomPrompt()
     {
         Random random = new Random();
@@ -47,12 +48,36 @@ public class ReflectionActivity : Activity
         return _prompts[index];
     }
 
-    // Get a random question
+    // Refills and shuffles the question queue from the master list
+    private void RefillQuestionQueue()
+    {
+        // Copy the master list and shuffle it
+        List<string> shuffled = new List<string>(_questions);
+        Random random = new Random();
+
+        for (int i = shuffled.Count - 1; i > 0; i--)
+        {
+            int j = random.Next(i + 1);
+            string temp = shuffled[i];
+            shuffled[i] = shuffled[j];
+            shuffled[j] = temp;
+        }
+
+        foreach (string question in shuffled)
+        {
+            _questionQueue.Enqueue(question);
+        }
+    }
+
+    // Returns the next question — no repeats until every question has been used once
     public string GetRandomQuestion()
     {
-        Random random = new Random();
-        int index = random.Next(_questions.Count);
-        return _questions[index];
+        if (_questionQueue.Count == 0)
+        {
+            RefillQuestionQueue();
+        }
+
+        return _questionQueue.Dequeue();
     }
 
     // Run the reflection activity
@@ -67,7 +92,7 @@ public class ReflectionActivity : Activity
         Console.WriteLine("When you have something in mind, press enter to continue.");
         Console.ReadLine();
 
-        Console.WriteLine("Now ponder on each of the following questions as they related to this experience.");
+        Console.WriteLine("Now ponder on each of the following questions as they relate to this experience.");
         Console.Write("You may begin in: ");
         ShowCountDown(5);
 
@@ -76,7 +101,7 @@ public class ReflectionActivity : Activity
         DateTime startTime = DateTime.Now;
         DateTime endTime = startTime.AddSeconds(_duration);
 
-        // Display random questions until duration is reached
+        // Display questions (no repeats until all used) until duration is reached
         while (DateTime.Now < endTime)
         {
             Console.Write($"> {GetRandomQuestion()} ");

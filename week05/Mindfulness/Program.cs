@@ -3,19 +3,36 @@ using System.Collections.Generic;
 
 /*
  * W05 Project: Mindfulness Program
- * 
+ *
  * This program provides three mindfulness activities:
- * 1. Breathing Activity - Paced breathing exercise
- * 2. Reflection Activity - Reflection on past experiences of strength
- * 3. Listing Activity - Listing positive things in various categories
- * 
- * EXCEEDING REQUIREMENTS:
- * - Added activity log tracking to keep count of how many times each activity was performed
- * - Activity statistics are displayed when user quits
- * - Enhanced animations with smooth spinner display
- * 
+ *   1. Breathing Activity  - Guides the user through paced breathing cycles.
+ *   2. Reflection Activity - Prompts the user to reflect on past experiences of strength.
+ *   3. Listing Activity    - Asks the user to list positive things in a chosen category.
+ *
+ * ─── EXCEEDING CORE REQUIREMENTS ──────────────────────────────────────────────
+ *
+ * 1. NO-REPEAT QUESTION SHUFFLING (ReflectionActivity)
+ *    Questions are served from a shuffled queue rather than chosen at random each
+ *    time. This guarantees every question is shown before any repeats — the exact
+ *    enhancement described in the assignment specification.  When the queue empties
+ *    it is refilled and re-shuffled automatically, so the activity can run for any
+ *    duration without ever running out of questions.
+ *
+ * 2. SESSION ACTIVITY LOG
+ *    Program.cs maintains a dictionary that counts how many times each activity is
+ *    run in the current session.  When the user selects "Quit", a summary screen
+ *    displays those counts before exiting, giving the user gentle feedback on their
+ *    mindfulness practice for the day.
+ *
+ * 3. CORRECT MULTI-DIGIT COUNTDOWN ERASE
+ *    The base-class ShowCountDown method erases each number by writing exactly as
+ *    many backspace/space/backspace characters as digits were printed.  This ensures
+ *    numbers 10 and above (e.g., a 30-second breathing countdown) erase cleanly
+ *    instead of leaving a stray digit on screen.
+ * ──────────────────────────────────────────────────────────────────────────────
+ *
  * Author: [Your Name]
- * Date: [Current Date]
+ * Date:   [Current Date]
  */
 
 class Program
