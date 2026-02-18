@@ -1,29 +1,33 @@
+using System;
+
 public class ChecklistGoal : Goal
 {
-    private int _amountCompleted;
-    private int _targetAmount;
-    private int _bonus;
+    private int _targetCount;
+    private int _currentCount;
+    private int _bonusPoints;
 
-    public ChecklistGoal(string shortName, string description, int points, int targetAmount, int bonus)
-        : base(shortName, description, points)
+    public ChecklistGoal(string name, string description, int points,
+        int targetCount, int bonusPoints, int currentCount = 0)
+        : base(name, description, points)
     {
-        _targetAmount = targetAmount;
-        _bonus = bonus;
-        _amountCompleted = 0;
+        _targetCount = targetCount;
+        _bonusPoints = bonusPoints;
+        _currentCount = currentCount;
     }
 
     public override int RecordEvent()
     {
-        if (_amountCompleted < _targetAmount)
+        if (_currentCount < _targetCount)
         {
-            _amountCompleted++;
+            _currentCount++;
+            int earned = GetPoints();
 
-            if (_amountCompleted == _targetAmount)
+            if (_currentCount == _targetCount)
             {
-                return GetPoints() + _bonus;
+                earned += _bonusPoints;
             }
 
-            return GetPoints();
+            return earned;
         }
 
         return 0;
@@ -31,12 +35,18 @@ public class ChecklistGoal : Goal
 
     public override bool IsComplete()
     {
-        return _amountCompleted >= _targetAmount;
+        return _currentCount >= _targetCount;
     }
 
-    public override string GetDetailsString()
+    public override string GetStatus()
     {
-        string status = IsComplete() ? "[X]" : "[ ]";
-        return $"{status} {GetShortName()} ({GetDescription()}) -- Currently completed: {_amountCompleted}/{_targetAmount}";
+        return IsComplete()
+            ? $"[X] ({_currentCount}/{_targetCount})"
+            : $"[ ] ({_currentCount}/{_targetCount})";
+    }
+
+    public override string GetStringRepresentation()
+    {
+        return $"ChecklistGoal|{GetName()}|{GetDescription()}|{GetPoints()}|{_targetCount}|{_bonusPoints}|{_currentCount}";
     }
 }

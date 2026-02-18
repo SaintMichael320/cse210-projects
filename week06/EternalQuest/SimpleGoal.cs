@@ -1,11 +1,13 @@
+using System;
+
 public class SimpleGoal : Goal
 {
     private bool _isComplete;
 
-    public SimpleGoal(string shortName, string description, int points)
-        : base(shortName, description, points)
+    public SimpleGoal(string name, string description, int points, bool isComplete = false)
+        : base(name, description, points)
     {
-        _isComplete = false;
+        _isComplete = isComplete;
     }
 
     public override int RecordEvent()
@@ -24,9 +26,13 @@ public class SimpleGoal : Goal
         return _isComplete;
     }
 
-    public override string GetDetailsString()
+    public override string GetStatus()
     {
-        string status = _isComplete ? "[X]" : "[ ]";
-        return $"{status} {GetShortName()} ({GetDescription()})";
+        return _isComplete ? "[X]" : "[ ]";
+    }
+
+    public override string GetStringRepresentation()
+    {
+        return $"SimpleGoal|{GetName()}|{GetDescription()}|{GetPoints()}|{_isComplete}";
     }
 }
